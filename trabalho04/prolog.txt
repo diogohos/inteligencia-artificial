@@ -1,0 +1,63 @@
+% Exercício 01
+
+ele_rep([],[]).
+ele_rep([X|Xs0],Ys0) :-
+   div(=(X),Xs0,Es,Xs),
+  (Es=[] -> Ys0=Ys; Ys0=[X|Ys]),
+   ele_rep(Xs,Ys).
+
+% Exercício 02
+lista_intercalada([], L, L).
+
+lista_intercalada([C | R], L2, [C | R2]) :-
+	lista_intercalada(L2, R, R2),
+	!.
+
+
+
+% Exercício 03
+
+separa([],[],[]).
+separa([X],[X],[]).
+separa([X,Y|Z],[X|A],[Y|B]) :- distribui(Z,A,B). 
+
+alterna([],B,B).
+alterna(A,[],A).
+alterna([X|A],[Y|B],[X|C]) :-
+    X =< Y,
+    alterna(A,[Y|B],C).
+alterna([X|A],[Y|B],[Y|C]) :-
+    X > Y,
+    alterna([X|A],B,C).
+
+ordem([],[]).
+ordem([X],[X]).
+ordem([X,Y|Z],S) :-
+    separa([X,Y|Z],A,B),
+    ordem(A,As),
+    ordem(B,Bs),
+    alterna(As,Bs,S).
+
+
+
+
+% Exercício 04
+
+ordenada(Lista,Class) :- 
+    ordena_elem(Lista,[],Class).
+
+ordena_elem([],Acc,Acc).
+
+ordena_elem([C|R],Acc,Class) :- 
+    bolha(C,R,NT,Max),
+    ordena_elem(NT,[Max|Acc],Class).
+   
+bolha(X,[],[],X).
+
+bolha(X,[Y|R],[Y|NT],Max) :- 
+    X > Y,
+    bolha(X,R,NT,Max).
+
+bolha(X,[Y|R],[X|NT],Max) :- 
+    X =< Y,
+    bolha(Y,R,NT,Max).
